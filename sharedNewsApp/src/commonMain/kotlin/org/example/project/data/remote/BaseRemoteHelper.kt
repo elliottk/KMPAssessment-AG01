@@ -48,6 +48,7 @@ open class BaseRemoteHelper {
                 url(url)
             }
         } catch (e: Exception) {
+            e.printStackTrace()
             return ApiResult.Error(RemoteException.ConnectionError)
         }
 
@@ -61,6 +62,7 @@ open class BaseRemoteHelper {
             else
                 ApiResult.Error(RemoteException.ResultError(statusResult.message))
         } catch (e: Exception) {
+            e.printStackTrace()
             ApiResult.Error(RemoteException.ParseError)
         }
 

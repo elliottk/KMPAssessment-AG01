@@ -8,7 +8,7 @@ data class StatusResult<T>(
     @SerialName("status")
     val status: String,
     @SerialName("message")
-    val message: String,
+    val message: String? = null,
     @SerialName("data")
     val data: T,
 ){

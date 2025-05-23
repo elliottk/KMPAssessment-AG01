@@ -1,10 +1,11 @@
 package org.example.project.di
 
 import io.ktor.client.HttpClient
-import io.ktor.client.engine.cio.CIO
 import kotlinx.serialization.json.Json
+import org.example.project.data.remote.KtorClientFactory
 import org.example.project.data.remote.RemoteHelper
 import org.example.project.data.remote.RemoteHelperImpl
+import org.example.project.ui.news.NewsViewModel
 
 /**
  * Dependency injection module providing application-wide singleton instances.
@@ -22,14 +23,15 @@ object AppModule {
     /**
      * Lazy-initialized HTTP client for making network requests.
      *
-     * Uses the CIO (Coroutine-based I/O) engine which is suitable for
-     * multiplatform applications and provides good performance with
-     * Kotlin coroutines integration.
+     * Uses platform-specific HTTP engines through [KtorClientFactory], which is an
+     * expect class that provides the appropriate engine for each target platform:
+     * - **Darwin engine** for iOS (NSURLSession-based)
+     * - **Android engine** for Android (OkHttp-based)
      *
      * @see HttpClient for client configuration options
-     * @see CIO for engine-specific details
+     * @see KtorClientFactory for expect/actual factory implementation details
      */
-    val ktorClient by lazy { HttpClient(CIO) }
+    val ktorClient: HttpClient by lazy { KtorClientFactory().createClient() }
 
     /**
      * Lazy-initialized JSON serialization configuration.
@@ -57,4 +59,9 @@ object AppModule {
      * @see RemoteHelperImpl for the concrete implementation
      */
     val remoteHelper: RemoteHelper by lazy { RemoteHelperImpl() }
+
+    /**
+    * Factory method for creating NewsViewModel instances.
+    */
+    fun provideNewsViewModel() = NewsViewModel()
 }

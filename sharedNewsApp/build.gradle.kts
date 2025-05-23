@@ -30,27 +30,30 @@ kotlin {
     
     sourceSets {
         commonMain.dependencies {
+            implementation(compose.animation)
+            implementation(compose.animationGraphics)
             implementation(compose.runtime)
             implementation(compose.foundation)
-            implementation(compose.material)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.ktor.core)
-            implementation(libs.ktor.cio)
             implementation(libs.ktor.serialization)
+            implementation(libs.media.kamel)
+            implementation(libs.kotlin.datetime)
+
         }
 
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
-            // Add Android dependencies here
+            implementation(libs.ktor.android)
         }
 
         iosMain.dependencies {
-            // Add iOS dependencies here
+            implementation(libs.ktor.darwin)
         }
     }
 }

@@ -1,0 +1,27 @@
+package org.example.project.resource
+
+object Strings {
+    const val APP_NAME = "News App"
+    const val LATEST_NEWS = "Latest News"
+    const val LOADING = "Loading..."
+    const val LOADING_MORE = "Loading more..."
+    const val NO_NEWS_AVAILABLE = "No news available"
+    const val TAB_REFRESH = "Tap refresh or try again later"
+    const val ERROR = "Error"
+    const val RETRY = "Retry"
+    const val DISMISS = "✕"
+    const val REFRESH = "↻"
+    const val REFRESHING = "..."
+    const val BY_AUTHOR = "By "
+    const val LOCAL_BADGE = "LOCAL"
+    const val FAILED_TO_LOAD_IMAGE = "Failed to load image"
+    const val OFFLINE_CACHED_CONTENT = "📶 Offline - Showing cached content"
+    const val SHOWING_CACHED_CONTENT = "💾 Showing cached content"
+    const val NO_INTERNET_NO_CACHE = "No internet connection and no cached data available"
+    const val LOADING_WITH_PROGRESS = "Loading... "
+    const val DATE_FORMAT = "MMM dd, yyyy"
+    const val CAMERA_ICON = "📷"
+    const val NEWS_ICON = "📰"
+    const val ERROR_ICON = "❌"
+    const val REFRESH_ICON = "⟳"
+}
