@@ -2,12 +2,14 @@ package org.example.project.di
 
 import app.cash.sqldelight.db.SqlDriver
 import io.ktor.client.HttpClient
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.serialization.json.Json
 import org.example.project.data.database.DatabaseHelper
 import org.example.project.data.database.DatabaseHelperImpl
-import org.example.project.di.KtorClientFactory
 import org.example.project.data.remote.RemoteHelper
 import org.example.project.data.remote.RemoteHelperImpl
+import org.example.project.data.repository.GetNewsRepository
+import org.example.project.data.repository.GetNewsRepositoryImpl
 import org.example.project.database.NewsDatabase
 import org.example.project.ui.news.NewsViewModel
 
@@ -24,7 +26,7 @@ import org.example.project.ui.news.NewsViewModel
  */
 object AppModule {
 
-    var applicationContext:Any? = null
+    var applicationContext: Any? = null
 
     /**
      * Lazy-initialized HTTP client for making network requests.
@@ -69,7 +71,10 @@ object AppModule {
     /**
      * Factory method for creating NewsViewModel instances.
      */
-    fun provideNewsViewModel() = NewsViewModel()
+    fun provideNewsViewModel(
+        getNewsRepository: GetNewsRepository = GetNewsRepositoryImpl(),
+        scope: CoroutineScope? = null
+    ) = NewsViewModel(getNewsRepository, scope)
 
     /**
      * Lazy-initialized SQLDelight database driver.
@@ -83,7 +88,11 @@ object AppModule {
      * @see SqlDriver for the SQLDelight driver interface
      * @see DatabaseDriverFactory for the expect/actual factory implementation
      */
-    private val databaseDriver: SqlDriver by lazy { DatabaseDriverFactory().createDriver(applicationContext) }
+    private val databaseDriver: SqlDriver by lazy {
+        DatabaseDriverFactory().createDriver(
+            applicationContext
+        )
+    }
 
     /**
      * Lazy-initialized SQLDelight database instance.

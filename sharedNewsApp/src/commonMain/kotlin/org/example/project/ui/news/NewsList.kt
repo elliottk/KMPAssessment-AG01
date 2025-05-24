@@ -32,6 +32,9 @@ fun NewsListScreen(
     isDarkTheme: Boolean = false,
     onThemeToggle: (Boolean) -> Unit = {}
 ) {
+    LaunchedEffect(Unit) {
+        viewModel.loadNews()
+    }
     val uiState by viewModel.uiState.collectAsState()
     val listState = rememberLazyListState()
 

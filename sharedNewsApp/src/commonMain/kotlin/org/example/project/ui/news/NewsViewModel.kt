@@ -2,15 +2,18 @@ package org.example.project.ui.news
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.example.project.data.repository.GetNewsRepository
 import org.example.project.model.ApiResult
-import org.example.project.ui.news.NewsUiState
 
-class NewsViewModel(private val getNewsRepository: GetNewsRepository = GetNewsRepository()) :
+class NewsViewModel(
+    private val getNewsRepository: GetNewsRepository,
+    private val scope: CoroutineScope? = null
+) :
     ViewModel() {
 
     private val _uiState = MutableStateFlow(NewsUiState())
@@ -18,12 +21,8 @@ class NewsViewModel(private val getNewsRepository: GetNewsRepository = GetNewsRe
 
     private val pageSize = 5
 
-    init {
-        loadNews()
-    }
-
     fun loadNews(refresh: Boolean = false) {
-        viewModelScope.launch {
+        (scope?:viewModelScope).launch {
 
             val page = if (refresh) 1 else _uiState.value.currentPage + 1
 

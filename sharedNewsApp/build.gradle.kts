@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.serialization)
     alias(libs.plugins.sqldelight)
+    alias(libs.plugins.mokkery)
 }
 
 kotlin {
@@ -38,8 +39,6 @@ kotlin {
     
     sourceSets {
         commonMain.dependencies {
-            implementation(compose.animation)
-            implementation(compose.animationGraphics)
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.ui)
@@ -52,7 +51,11 @@ kotlin {
             implementation(libs.media.kamel)
             implementation(libs.kotlin.datetime)
             implementation(libs.sqldelight.coroutines.extensions)
+        }
 
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
+            implementation(libs.kotlinx.coroutines.test)
         }
 
         androidMain.dependencies {
@@ -60,7 +63,6 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.android)
             implementation(libs.sqldelight.android)
-
         }
 
         iosMain.dependencies {
