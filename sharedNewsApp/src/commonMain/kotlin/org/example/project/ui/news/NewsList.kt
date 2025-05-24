@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.text.BasicText
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
-import org.example.project.ThemeSwitcher
 import org.example.project.model.News
 import org.example.project.resource.Strings
 import org.example.project.ui.theme.AppThemeValues
@@ -72,44 +71,6 @@ fun NewsListScreen(
             )
         }
 
-        // News list
-        LazyColumn(
-            state = listState,
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(AppThemeValues.dimensions.paddingMedium),
-            verticalArrangement = Arrangement.spacedBy(AppThemeValues.dimensions.paddingSmall)
-        ) {
-            items(uiState.news) { news ->
-                NewsItem(
-                    news = news,
-                    onClick = { onNewsClick(news) }
-                )
-            }
-
-            // Loading indicator at bottom
-            if (uiState.isLoadingMore) {
-                item {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        LoadingIndicator()
-                    }
-                }
-            }
-        }
-
-        // Initial loading state
-        if (uiState.isLoading && uiState.news.isEmpty()) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                LoadingIndicator()
-            }
-        }
 
         // Empty state
         if (!uiState.isLoading && uiState.news.isEmpty() && uiState.error == null) {
@@ -118,6 +79,35 @@ fun NewsListScreen(
                 contentAlignment = Alignment.Center
             ) {
                 EmptyState()
+            }
+        } else {
+            // News list
+            LazyColumn(
+                state = listState,
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(AppThemeValues.dimensions.paddingMedium),
+                verticalArrangement = Arrangement.spacedBy(AppThemeValues.dimensions.paddingSmall)
+            ) {
+                items(uiState.news) { news ->
+                    NewsItem(
+                        news = news,
+                        onClick = { onNewsClick(news) }
+                    )
+                }
+
+                // Loading indicator at bottom
+                if (uiState.isLoadingMore || (uiState.isLoading && uiState.news.isEmpty())) {
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            LoadingIndicator()
+                        }
+                    }
+                }
             }
         }
     }
@@ -183,6 +173,7 @@ private fun RefreshButton(
         )
     }
 }
+
 @Composable
 private fun NewsItem(
     news: News,
@@ -454,6 +445,32 @@ private fun EmptyState() {
                 fontSize = 14.sp,
                 color = Color(0xFF888888)
             )
+        )
+    }
+}
+
+@Composable
+fun ThemeSwitcher(
+    isDarkTheme: Boolean,
+    onThemeToggle: (Boolean) -> Unit
+) {
+
+    Row(
+        modifier = Modifier
+            .clip(RoundedCornerShape(AppThemeValues.dimensions.cornerRadius))
+            .background(AppThemeValues.colors.surface)
+            .clickable { onThemeToggle(!isDarkTheme) }
+            .padding(AppThemeValues.dimensions.paddingSmall),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        BasicText(
+            text = if (isDarkTheme) "🌙" else "☀️",
+            style = AppThemeValues.typography.body1
+        )
+        Spacer(modifier = Modifier.width(AppThemeValues.dimensions.paddingXSmall))
+        BasicText(
+            text = if (isDarkTheme) "Dark" else "Light",
+            style = AppThemeValues.typography.body2
         )
     }
 }
