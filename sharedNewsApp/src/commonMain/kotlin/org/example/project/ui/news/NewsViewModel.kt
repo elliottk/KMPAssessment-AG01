@@ -16,7 +16,7 @@ class NewsViewModel(private val getNewsRepository: GetNewsRepository = GetNewsRe
     private val _uiState = MutableStateFlow(NewsUiState())
     val uiState: StateFlow<NewsUiState> = _uiState.asStateFlow()
 
-    private val pageSize = 20
+    private val pageSize = 5
 
     init {
         loadNews()
@@ -49,7 +49,7 @@ class NewsViewModel(private val getNewsRepository: GetNewsRepository = GetNewsRe
                         isLoading = false,
                         isLoadingMore = false,
                         error = null,
-                        hasMore = true,//todo:response.hasMore
+                        hasMore = result.data.size == pageSize,
                         currentPage = page
                     )
                 }

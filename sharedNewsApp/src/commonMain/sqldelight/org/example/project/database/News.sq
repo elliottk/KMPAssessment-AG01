@@ -1,0 +1,24 @@
+
+CREATE TABLE NewsCache (
+    id INTEGER NOT NULL PRIMARY KEY,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    author TEXT NOT NULL,
+    isLocal INTEGER NOT NULL,
+    publishedAtUnix INTEGER NOT NULL,
+    media TEXT
+);
+
+-- Insert or replace news item
+insertOrReplaceNews:
+INSERT OR REPLACE INTO NewsCache(
+    id, title, description, author, isLocal, publishedAtUnix, media
+) VALUES (?, ?, ?, ?, ?, ?, ?);
+
+-- Get all news ordered by published date (newest first)
+getNews:
+SELECT * FROM NewsCache ORDER BY publishedAtUnix DESC LIMIT ?,?;
+
+-- Clear all news
+deleteAllNews:
+DELETE FROM NewsCache;

@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -7,9 +8,15 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.serialization)
+    alias(libs.plugins.sqldelight)
 }
 
 kotlin {
+    targets.withType<KotlinNativeTarget>().configureEach {
+        binaries.configureEach {
+            linkerOpts("-lsqlite3")
+        }
+    }
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
@@ -25,6 +32,7 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "SharedNewsApp"
             isStatic = true
+            linkerOpts("-lsqlite3")
         }
     }
     
@@ -43,6 +51,7 @@ kotlin {
             implementation(libs.ktor.serialization)
             implementation(libs.media.kamel)
             implementation(libs.kotlin.datetime)
+            implementation(libs.sqldelight.coroutines.extensions)
 
         }
 
@@ -50,10 +59,13 @@ kotlin {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.android)
+            implementation(libs.sqldelight.android)
+
         }
 
         iosMain.dependencies {
             implementation(libs.ktor.darwin)
+            implementation(libs.sqldelight.native)
         }
     }
 }
@@ -88,4 +100,14 @@ android {
 dependencies {
     debugImplementation(compose.uiTooling)
 }
+
+sqldelight {
+    databases {
+        create("NewsDatabase") {
+            packageName.set("org.example.project.database")
+            srcDirs("src/commonMain/sqldelight")
+        }
+    }
+}
+
 

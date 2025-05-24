@@ -11,7 +11,6 @@ data class StatusResult<T>(
     val message: String? = null,
     @SerialName("data")
     val data: T,
-){
-
+) {
     fun isSuccess() = status == "success"
 }
