@@ -1,4 +1,4 @@
-package org.example.project.data.remote
+package org.example.project.di
 
 import io.ktor.client.HttpClient
 
