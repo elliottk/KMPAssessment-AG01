@@ -2,80 +2,90 @@
 
 ## Overview
 
-This project is a reusable **Jetpack Compose Multiplatform (CMP)** component that displays a list of formatted news stories. It is designed to be embedded in both Android and iOS applications, and **is not a standalone app**. Each story item includes a headline, image, and published date, and the list supports pagination, offline access, and dynamic page size configuration.
+**NewsApp** is a reusable, cross-platform UI component built with **Jetpack Compose Multiplatform (CMP)**. It is designed to be integrated into Android and iOS apps to display a paginated list of news stories. Each item includes a headline, image, and publish date. This is not a standalone application but a self-contained module that can be embedded into larger projects.
+
+The component supports pagination, offline access via local caching, configurable page size, and dark mode (on Android). My focus was on building a clean, testable, and scalable module that demonstrates modern mobile architecture and Kotlin Multiplatform capabilities.
 
 ---
 
 ## Architectural Choices
 
-### Architecture Pattern: MVI (Model-View-Intent)
+### Model-View-Intent (MVI)
 
-I selected the **MVI architecture pattern** to enforce a **unidirectional data flow** and maintain predictable state management. This approach allowed me to clearly separate concerns between UI, logic, and data. It simplified testing, reduced bugs, and worked naturally with Jetpack Compose's reactive design.
+I selected the **MVI (Model-View-Intent)** architecture pattern because of its ability to enforce a **unidirectional data flow** and make state management more predictable. This pattern provides strong separation of concerns and makes the UI logic easier to test and maintain.
 
-The MVI layer includes:
-- **Intent** classes for user actions
-- **State** data classes representing UI state
-- **Reducers** to manage transitions
-- **ViewModel** for orchestrating logic and exposing state
+My MVI implementation includes:
+- **Intent** – user actions like loading data
+- **State** – the current UI data and state
+- **Reducer** – updates state based on intents
+- **ViewModel** – handles the logic, fetches data, and emits UI state
+
+MVI is particularly well-suited for handling pagination, error messaging, and dynamic UI updates in Compose.
 
 ---
 
-## Technologies & Libraries
+## Technology Stack
 
-I made deliberate choices to keep the codebase modern, clean, and compatible with Kotlin Multiplatform best practices:
+To support cross-platform development and clean architecture, I used:
 
-- **Jetpack Compose Multiplatform** – Enables shared UI code across Android and iOS.
-- **Ktor Client** – A Kotlin-first asynchronous networking library to fetch news stories from:  
+- **Jetpack Compose Multiplatform** – for shared declarative UI on Android and iOS
+- **Ktor Client** – for fetching data from the endpoint:  
   `https://cbcmusic.github.io/assessment-tmp/data/data.json`
-- **Kotlinx Serialization** – For type-safe and efficient JSON parsing.
-- **SQLDelight** – Used for local caching and offline access. It provides a type-safe interface and compile-time SQL checks.
-- **Kotlin Coroutines** – Used throughout for managing asynchronous tasks like network and database operations.
+- **Kotlinx Serialization** – for efficient and type-safe JSON parsing
+- **SQLDelight** – for caching and offline support with compile-time SQL validation
+- **Kotlin Coroutines** – for handling asynchronous operations like network calls and local DB interactions
 
 ---
 
-## Shared Module (`:shared`)
+## Shared Module Structure
 
-All core logic lives in the `shared` module, which includes:
-- **Data Layer**: API service, local database access, and repository.
-- **Business Logic**: Pagination logic, caching strategies, and offline handling.
-- **MVI Components**: Intent, State, Reducers, and shared ViewModel.
+All business logic is placed in the `:shared` Kotlin Multiplatform module. This includes:
 
-This separation ensures that the Android and iOS apps can use the same logic without duplication.
+- A data layer with remote and local sources
+- A repository class to manage fetching and caching
+- MVI components: intent classes, UI state, reducer, and shared ViewModel
+- Logic for pagination, error handling, and caching
+
+Platform-specific apps (e.g., `:androidApp`) use this shared logic to render the UI and apply native theming or platform-specific services.
 
 ---
 
 ## Features
 
 - List of news stories with headline, image, and publish date
-- **Pagination** with configurable page size
-- **Offline support** using SQLDelight cache
-- **Night mode** support on Android via Compose theming
-- Minimum **3 unit tests** included for core logic
+- Pagination with a configurable page size
+- Caching of previously loaded data for offline support
+- Night mode (on Android) using Compose theming
+- **3 unit tests** included:
+  - Initial ViewModel state validation
+  - Successful news loading
+  - Error handling with API failure
 
 ---
 
-## How to Use the Component
+## Getting Started
 
 ### Prerequisites
 
-- **Android Studio (Latest Stable)**
-- **SQLDelight Plugin**: Install via `Settings > Plugins`
-- **Xcode (Optional)** for iOS integration
+- **Android Studio** (latest stable version)
+- **SQLDelight plugin** (`Preferences > Plugins`)
+- **Xcode** (optional, for iOS builds)
 
-### Integration Steps
+### How to Use
 
-1. Clone the repository and open in Android Studio.
-2. Build and sync the project.
-3. Locate the `shared` module.
-4. Use the provided `NewsListView` composable inside your Compose screen.
-5. Set page size and any required configurations via ViewModel or repository.
-6. Run included unit tests (`shared/src/commonTest`) to verify logic.
+1. Clone the repository and open it in Android Studio.
+2. Sync the Gradle project.
+3. Review the `:shared` module for MVI and data logic.
+4. Use the `NewsListView` composable in your Android or iOS Compose screen.
+5. Set the page size or trigger pagination via the ViewModel.
+6. Run unit tests under `shared/src/commonTest` to verify logic.
 
 ---
 
 ## Final Notes
 
-This component is designed to be plug-and-play across platforms. If you are extending the project, you may consider abstracting themes further or enhancing the pagination model with remote keys.
+This component was built with clarity, modularity, and multiplatform compatibility in mind. It demonstrates how MVI, Kotlin Multiplatform, and Compose can work together in a modern development workflow.
 
-For any questions about architecture or integration, feel free to explore the shared module or reach out.
+If you're new to the codebase, I recommend exploring the repository and ViewModel classes in the `shared` module first—they represent the core business logic and UI flow.
 
+For questions about integrating or extending the component, please feel free to reach out via email or submit an issue in the repository. I'm happy to support or collaborate further.
