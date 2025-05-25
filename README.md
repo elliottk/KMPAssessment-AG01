@@ -57,9 +57,9 @@ This design ensures platform-agnostic business logic that can be reused on Andro
 - Offline caching of previously loaded stories
 - Night mode (on Android) using Jetpack Compose themes
 - Minimum of **3 unit tests** covering:
-    - JSON parsing
-    - Pagination logic
-    - Offline data handling
+    - Initial state validation
+    - Successful API response handling
+    - Error response handling with proper messaging
 
 ---
 
