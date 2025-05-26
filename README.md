@@ -1,3 +1,8 @@
+## Demo Videos
+
+- [▶ Watch Android Demo](https://youtube.com/shorts/2VP2SwYMFT8)
+- [▶ Watch iOS Demo](https://youtube.com/shorts/9otWs-hHTH8)
+- 
 # NewsApp – Compose Multiplatform News Component
 
 ## Overview
