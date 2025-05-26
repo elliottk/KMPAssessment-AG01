@@ -1,4 +1,9 @@
-# NewsApp – Compose Multiplatform News Component
+## Demo Videos
+
+- [▶ Watch Android Demo](https://youtube.com/shorts/2VP2SwYMFT8)
+- [▶ Watch iOS Demo](https://youtube.com/shorts/9otWs-hHTH8)
+- 
+- # NewsApp – Compose Multiplatform News Component
 
 ## Overview
 
@@ -87,7 +92,4 @@ All logic is placed in the `shared` Kotlin Multiplatform module. This includes:
    ```kotlin
    setContent { App() }
 
-## Demo Videos
 
-- [▶ Watch Android Demo](https://youtube.com/shorts/2VP2SwYMFT8)
-- [▶ Watch iOS Demo](https://youtube.com/shorts/9otWs-hHTH8)
